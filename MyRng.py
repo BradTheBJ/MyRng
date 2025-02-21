@@ -13,7 +13,8 @@ great = int(higest_raritiy / 16)
 amazing = int(higest_raritiy / 32)
 
 pygame.font.init()
-RollResualt = pygame.font.SysFont('Comic Sans MS', 50)
+RollResult = pygame.font.SysFont('Comic Sans MS', 50)
+RarityUI = pygame.font.SysFont('comic sans ms', 40)
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
@@ -34,17 +35,30 @@ def roll():
         rng = random.randint(1, int(higest_raritiy))
     
     if rng > common:
-        text_surface = RollResualt.render('common', True, (255, 255, 255))
+        Roll_Result = RollResult.render('common', True, (255, 255, 255))
+        Rarity_UI = RarityUI.render('Rarity 1/2', True, (255, 255, 255))
+
     elif rng > uncommon:
-        text_surface = RollResualt.render('uncommon', True, (0, 255, 0))
+        Roll_Result = RollResult.render('uncommon', True, (0, 255, 0))
+        Rarity_UI = RarityUI.render('Rarity 1/4', True, (255, 255, 255))
+
     elif rng > good:
-        text_surface = RollResualt.render('good', True, (0, 0, 255))
+        Roll_Result = RollResult.render('good', True, (0, 0, 255))
+        Rarity_UI = RarityUI.render('Rarity 1/8', True, (255, 255, 255))
+
     elif rng > great:
-        text_surface = RollResualt.render('great', True, (128, 0, 128))
+        Roll_Result = RollResult.render('great', True, (128, 0, 128))
+        Rarity_UI = RarityUI.render('Rarity 1/16', True, (255, 255, 255))
+
     else:
-        text_surface = RollResualt.render('amazing', True, (255, 215, 0))
+        Roll_Result = RollResult.render('amazing', True, (255, 215, 0))
+        Rarity_UI = RarityUI.render('Rarity 1/32', True, (255, 255, 255))
     
-    screen.blit(text_surface, (960, 540))
+    # Calculate the position to center the text
+    text_rect = Roll_Result.get_rect(center=(1920 / 2, 1080 / 2))
+    text_rect2 = Rarity_UI.get_rect(center = (1920 / 2 , 1080 / 2 + 50))
+    screen.blit(Rarity_UI, text_rect2)
+    screen.blit(Roll_Result, text_rect)
 
 while running:
     for event in pygame.event.get():
