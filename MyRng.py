@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+import time
 
 
 higest_raritiy = 8
@@ -12,14 +13,16 @@ good = higest_raritiy/8
 
 while True:
     random.randint(1, higest_raritiy)
+    print(rng)
+    time.sleep(1)
 
     if  rng >= 4:
         print("common")
 
-    if  rng >= 2:
+    elif  rng >= 2:
         print("uncommon")
 
-    if  rng >= 1:
+    elif  rng >= 1:
         print("good")
 
 
