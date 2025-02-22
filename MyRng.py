@@ -20,6 +20,7 @@ RollResult = pygame.font.SysFont('Comic Sans MS', 50)
 RarityUI = pygame.font.SysFont('comic sans ms', 40)
 RollText = pygame.font.SysFont('comic sans ms', 40)
 PityIndicator = pygame.font.SysFont('comic sans ms', 40)
+CloseGameText = pygame.font.SysFont('comic sans ms', 20)  # Smaller font for "Close Game" text
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
@@ -108,6 +109,15 @@ while running:
     if show_pity_text:
         PityText = PityIndicator.render('2x luck', True, (255, 255, 255))
         screen.blit(PityText, (1920 / 2 - PityText.get_width() / 2, 1080 / 2 - 150))
+
+    # Blit the "Close Game" text in the top left corner
+    CloseGameSurface = CloseGameText.render('Close Game', True, (255, 255, 255))
+    screen.blit(CloseGameSurface, (10, 10))
+
+    # Check if the mouse is over the "Close Game" text and close the game if clicked
+    if CursorCollidePoint.colliderect(CloseGameSurface.get_rect(topleft=(10, 10))):
+        if mouse.get_pressed()[0] and not mouse_pressed:
+            running = False
 
     # flip() the display to put your work on screen
     pygame.display.flip()
