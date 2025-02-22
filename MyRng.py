@@ -19,6 +19,7 @@ pygame.font.init()
 RollResult = pygame.font.SysFont('Comic Sans MS', 50)
 RarityUI = pygame.font.SysFont('comic sans ms', 40)
 RollText = pygame.font.SysFont('comic sans ms', 40)
+PityIndicator = pygame.font.SysFont('comic sans ms', 40)
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
@@ -28,19 +29,22 @@ running = True
 dt = 0
 pity = 0  # Initialize pity outside the loop
 mouse_pressed = False  # Flag to track mouse button state
+show_pity_text = False  # Flag to indicate when to show the pity text
 
 # Variables to store the current roll result and rarity UI
 current_roll_result = None
 current_rarity_ui = None
 
 def roll():
-    global pity, current_roll_result, current_rarity_ui
+    global pity, current_roll_result, current_rarity_ui, show_pity_text
     pity += 1 
     if pity == 10:
         rng = random.randint(1, int(higest_raritiy / 2))
         pity = 0  # Correct assignment
+        show_pity_text = True  # Set the flag to show the pity text
     else:
         rng = random.randint(1, int(higest_raritiy))
+        show_pity_text = False  # Reset the flag after displaying the text
     
     if rng > common:
         current_roll_result = RollResult.render('common', True, (255, 255, 255))
@@ -99,6 +103,11 @@ while running:
         text_rect2 = current_rarity_ui.get_rect(center=(1920 / 2, 1080 / 2 + 100))
         screen.blit(current_rarity_ui, text_rect2)
         screen.blit(current_roll_result, text_rect)
+
+    # Show the pity text if the flag is set
+    if show_pity_text:
+        PityText = PityIndicator.render('2x luck', True, (255, 255, 255))
+        screen.blit(PityText, (1920 / 2 - PityText.get_width() / 2, 1080 / 2 - 150))
 
     # flip() the display to put your work on screen
     pygame.display.flip()
