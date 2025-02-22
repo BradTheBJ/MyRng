@@ -5,7 +5,7 @@ import random
 import time
 
 Draw = pygame.draw
-RollPosition = (1920 / 2, 1080 / 2 - 300)
+RollPosition = (1920 / 2, 1080 / 2 + 300)
 
 higest_raritiy = 32
 common = int(higest_raritiy / 2)
@@ -18,8 +18,7 @@ mouse = pygame.mouse
 pygame.font.init()
 RollResult = pygame.font.SysFont('Comic Sans MS', 50)
 RarityUI = pygame.font.SysFont('comic sans ms', 40)
-RollText =pygame.font.SysFont('comic sans ms', 40)
-
+RollText = pygame.font.SysFont('comic sans ms', 40)
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
@@ -82,6 +81,9 @@ while running:
     # Create an invisible rectangle at the mouse position
     CursorCollidePoint = pygame.Rect(mousePos[0] - 50, mousePos[1] - 50, 100, 100)
     
+    # Draw a rectangle at RollPosition
+    Draw.rect(screen, (255, 255, 255), (RollPosition[0] - 25, RollPosition[1] - 25, 50, 50))
+
     # flip() the display to put your work on screen
     pygame.display.flip()
 
