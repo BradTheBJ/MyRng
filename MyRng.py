@@ -81,8 +81,8 @@ while running:
     # Create an invisible rectangle at the mouse position
     CursorCollidePoint = pygame.Rect(mousePos[0] - 50, mousePos[1] - 50, 100, 100)
     
-    # Draw a rectangle at RollPosition
-    Draw.rect(screen, (255, 255, 255), (RollPosition[0] - 25, RollPosition[1] - 25, 50, 50))
+    # Draw a wider rectangle at RollPosition
+    Draw.rect(screen, (255, 255, 255), (RollPosition[0] - 150, RollPosition[1] - 25, 300, 50))
 
     # flip() the display to put your work on screen
     pygame.display.flip()
