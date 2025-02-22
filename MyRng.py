@@ -27,10 +27,14 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 pity = 0  # Initialize pity outside the loop
+mouse_pressed = False  # Flag to track mouse button state
+
+# Variables to store the current roll result and rarity UI
+current_roll_result = None
+current_rarity_ui = None
 
 def roll():
-    global pity
-    time.sleep(1)
+    global pity, current_roll_result, current_rarity_ui
     pity += 1 
     if pity == 10:
         rng = random.randint(1, int(higest_raritiy / 2))
@@ -39,30 +43,24 @@ def roll():
         rng = random.randint(1, int(higest_raritiy))
     
     if rng > common:
-        Roll_Result = RollResult.render('common', True, (255, 255, 255))
-        Rarity_UI = RarityUI.render('Rarity 1/2', True, (255, 255, 255))
+        current_roll_result = RollResult.render('common', True, (255, 255, 255))
+        current_rarity_ui = RarityUI.render('Rarity 1/2', True, (255, 255, 255))
 
     elif rng > uncommon:
-        Roll_Result = RollResult.render('uncommon', True, (0, 255, 0))
-        Rarity_UI = RarityUI.render('Rarity 1/4', True, (255, 255, 255))
+        current_roll_result = RollResult.render('uncommon', True, (0, 255, 0))
+        current_rarity_ui = RarityUI.render('Rarity 1/4', True, (255, 255, 255))
 
     elif rng > good:
-        Roll_Result = RollResult.render('good', True, (0, 0, 255))
-        Rarity_UI = RarityUI.render('Rarity 1/8', True, (255, 255, 255))
+        current_roll_result = RollResult.render('good', True, (0, 0, 255))
+        current_rarity_ui = RarityUI.render('Rarity 1/8', True, (255, 255, 255))
 
     elif rng > great:
-        Roll_Result = RollResult.render('great', True, (128, 0, 128))
-        Rarity_UI = RarityUI.render('Rarity 1/16', True, (255, 255, 255))
+        current_roll_result = RollResult.render('great', True, (128, 0, 128))
+        current_rarity_ui = RarityUI.render('Rarity 1/16', True, (255, 255, 255))
 
     else:
-        Roll_Result = RollResult.render('amazing', True, (255, 215, 0))
-        Rarity_UI = RarityUI.render('Rarity 1/32', True, (255, 255, 255))
-    
-    # Calculate the position to center the text
-    text_rect = Roll_Result.get_rect(center=(1920 / 2, 1080 / 2))
-    text_rect2 = Rarity_UI.get_rect(center=(1920 / 2, 1080 / 2 + 100))
-    screen.blit(Rarity_UI, text_rect2)
-    screen.blit(Roll_Result, text_rect)
+        current_roll_result = RollResult.render('amazing', True, (255, 215, 0))
+        current_rarity_ui = RarityUI.render('Rarity 1/32', True, (255, 255, 255))
 
 while running:
     for event in pygame.event.get():
@@ -75,14 +73,32 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
 
-    # RENDER YOUR GAME HERE
-    roll()
-
     # Create an invisible rectangle at the mouse position
     CursorCollidePoint = pygame.Rect(mousePos[0] - 50, mousePos[1] - 50, 100, 100)
     
     # Draw a wider rectangle at RollPosition
-    Draw.rect(screen, (255, 255, 255), (RollPosition[0] - 150, RollPosition[1] - 25, 300, 50))
+    RollObject = Draw.rect(screen, (255, 255, 255), (RollPosition[0] - 150, RollPosition[1] - 25, 300, 50))
+
+    RollTextSurface = RollText.render('Roll', True, (0, 0, 0))
+
+    # Calculate the position to center the RollText in the RollObject
+    roll_text_rect = RollTextSurface.get_rect(center=(RollPosition[0], RollPosition[1]))
+    screen.blit(RollTextSurface, roll_text_rect)
+
+    # RENDER YOUR GAME HERE
+    if CursorCollidePoint.colliderect(RollObject):
+        if mouse.get_pressed()[0] and not mouse_pressed:
+            roll()
+            mouse_pressed = True
+        elif not mouse.get_pressed()[0]:
+            mouse_pressed = False
+
+    # Blit the current roll result and rarity UI to the screen
+    if current_roll_result and current_rarity_ui:
+        text_rect = current_roll_result.get_rect(center=(1920 / 2, 1080 / 2))
+        text_rect2 = current_rarity_ui.get_rect(center=(1920 / 2, 1080 / 2 + 100))
+        screen.blit(current_rarity_ui, text_rect2)
+        screen.blit(current_roll_result, text_rect)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
