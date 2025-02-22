@@ -4,17 +4,22 @@ import math
 import random
 import time
 
-higest_raritiy = 32
+Draw = pygame.draw
+RollPosition = (1920 / 2, 1080 / 2 - 300)
 
+higest_raritiy = 32
 common = int(higest_raritiy / 2)
 uncommon = int(higest_raritiy / 4)
 good = int(higest_raritiy / 8)
 great = int(higest_raritiy / 16)
 amazing = int(higest_raritiy / 32)
 
+mouse = pygame.mouse
 pygame.font.init()
 RollResult = pygame.font.SysFont('Comic Sans MS', 50)
 RarityUI = pygame.font.SysFont('comic sans ms', 40)
+RollText =pygame.font.SysFont('comic sans ms', 40)
+
 
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
@@ -56,7 +61,7 @@ def roll():
     
     # Calculate the position to center the text
     text_rect = Roll_Result.get_rect(center=(1920 / 2, 1080 / 2))
-    text_rect2 = Rarity_UI.get_rect(center = (1920 / 2 , 1080 / 2 + 50))
+    text_rect2 = Rarity_UI.get_rect(center=(1920 / 2, 1080 / 2 + 100))
     screen.blit(Rarity_UI, text_rect2)
     screen.blit(Roll_Result, text_rect)
 
@@ -65,11 +70,18 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    # Update mouse position
+    mousePos = mouse.get_pos()
+
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
 
     # RENDER YOUR GAME HERE
     roll()
+
+    # Create an invisible rectangle at the mouse position
+    CursorCollidePoint = pygame.Rect(mousePos[0] - 50, mousePos[1] - 50, 100, 100)
+    
     # flip() the display to put your work on screen
     pygame.display.flip()
 
