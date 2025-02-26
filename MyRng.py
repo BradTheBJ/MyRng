@@ -7,12 +7,14 @@ import time
 Draw = pygame.draw
 RollPosition = (1920 / 2, 1080 / 2 + 300)
 
-higest_raritiy = 32
+higest_raritiy = 128
 common = int(higest_raritiy / 2)
 uncommon = int(higest_raritiy / 4)
 good = int(higest_raritiy / 8)
 great = int(higest_raritiy / 16)
 amazing = int(higest_raritiy / 32)
+epic = int(higest_raritiy / 64)
+legendery = int(higest_raritiy / 128)
 
 mouse = pygame.mouse
 pygame.font.init()
@@ -48,24 +50,32 @@ def roll():
         show_pity_text = False  # Reset the flag after displaying the text
     
     if rng > common:
-        current_roll_result = RollResult.render('common', True, (255, 255, 255))
+        current_roll_result = RollResult.render('common', True, (169, 169, 169))
         current_rarity_ui = RarityUI.render('Rarity 1/2', True, (255, 255, 255))
 
     elif rng > uncommon:
-        current_roll_result = RollResult.render('uncommon', True, (0, 255, 0))
+        current_roll_result = RollResult.render('uncommon', True, (0, 128, 0))
         current_rarity_ui = RarityUI.render('Rarity 1/4', True, (255, 255, 255))
 
     elif rng > good:
-        current_roll_result = RollResult.render('good', True, (0, 0, 255))
-        current_rarity_ui = RarityUI.render('Rarity 1/8', True, (255, 255, 255))
+        current_roll_result = RollResult.render('good', True, (0, 255, 0))
+        current_rarity_ui = RarityUI.render('Rarity 1/8', True, (255,255,255))
 
     elif rng > great:
-        current_roll_result = RollResult.render('great', True, (128, 0, 128))
+        current_roll_result = RollResult.render('great', True, (0, 191, 255))
         current_rarity_ui = RarityUI.render('Rarity 1/16', True, (255, 255, 255))
 
-    else:
-        current_roll_result = RollResult.render('amazing', True, (255, 215, 0))
+    elif rng > amazing:
+        current_roll_result = RollResult.render('amazing', True, (255, 165, 0))
         current_rarity_ui = RarityUI.render('Rarity 1/32', True, (255, 255, 255))
+    
+    elif rng > epic:
+        current_roll_result = RollResult.render('epic', True, (128, 0, 128))
+        current_rarity_ui = RarityUI.render('Rarity 1/64', True, (255, 255, 255))
+
+    else:
+        current_roll_result = RollResult.render('legendary', True, (255, 0, 255))
+        current_rarity_ui = RarityUI.render('Rarity 1/128', True, (255, 255, 255))
 
 while running:
     for event in pygame.event.get():
